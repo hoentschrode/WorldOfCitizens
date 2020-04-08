@@ -1,0 +1,9 @@
+{
+    "python.pythonPath": ".venv/bin/python3.7",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pycodestyleArgs": [
+        "--ignore=E501,E402"
+    ]
+}
