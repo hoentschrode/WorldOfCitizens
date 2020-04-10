@@ -4,8 +4,16 @@ from WorldOfCitizens.population import ID, X, Y, STATE, RECOVERY_DURATION, STATE
 
 
 def infect(config: Config, population, frame: int):
-    healthy = population[population[:, STATE] == STATE_HEALTHY]
-    for patient in healthy:
+
+    if frame == 20:
+        id = int(np.random.uniform(low=0, high=config.popuplation_size))
+        population[:, STATE][population[:, ID] == id] = STATE_SICK
+        population[:, RECOVERY_DURATION][population[:, ID] == id] = int(np.random.uniform(low=config.recovery_duration[0], high=config.recovery_duration[1]))
+        population[:, INFECTED_SINCE][population[:, ID] == id] = frame
+        return population
+
+    infectious = population[population[:, STATE] == STATE_SICK]
+    for patient in infectious:
         infection_zone = [
             patient[X] - config.infection_range,
             patient[Y] - config.infection_range,

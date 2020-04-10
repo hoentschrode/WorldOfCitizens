@@ -18,7 +18,7 @@ def draw_frame(config: Config, population: np.ndarray, destinations: np.ndarray,
     _draw_chart(config, population, stat_tracker, frame)
 
     plt.draw()
-    plt.pause(0.00001)
+    plt.pause(0.0000001)
 
 
 def _draw_map(config: Config, population, destinations, frame):

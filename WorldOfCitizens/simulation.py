@@ -24,8 +24,6 @@ class Simulation(object):
         self._config = config
         self._stat_tracker = StatTracker()
 
-        self._population[:, DESTINATION] = 1
-
         logger.setLevel(self.config.log_level)
 
     @property
@@ -37,7 +35,6 @@ class Simulation(object):
 
         # Check for destinations in use
         have_active_destinations = len(self._population[self._population[:, DESTINATION] != 0]) > 0
-
         if have_active_destinations:
             self._population = update_at_destination(self._population, self._destinations)
             self._population = update_heading_to_destination(self._population, self._destinations)
@@ -49,17 +46,18 @@ class Simulation(object):
         self._population = update_out_of_bounds(self._population, xbounds, ybounds)
         self._population = update_headings(self.config, self._population)
         self._population = update_movement(self.config, self._population)
-        # self._population = infect(self.config, self._population, self._frame)
-        # self._population = recover_or_die(self.config, self._population, self._frame)
+        self._population = infect(self.config, self._population, self._frame)
+        self._population = recover_or_die(self.config, self._population, self._frame)
 
         # Deads cannot move anymore
         self._population[:, HEADING_X][self._population[:, STATE] == STATE_DEAD] = 0
         self._population[:, HEADING_Y][self._population[:, STATE] == STATE_DEAD] = 0
 
-        self._stat_tracker.update(self.config, self._population)
+        self._stat_tracker.update(self.config, self._population, self._frame)
         draw_frame(self.config, self._population, self._destinations, self._stat_tracker, self._frame)
 
         self._frame += 1
+        """
         if self._frame == 60:
             update = np.random.random(size=(self._config.popuplation_size))
             shp = update[update < 0.5].shape
@@ -68,6 +66,7 @@ class Simulation(object):
 
             self._population[:, DESTINATION][update >= 0.5] = 3
             self._population[:, DESTINATION_ARRIVED][update > 0.5] = 0
+        """
 
 
 if __name__ == '__main__':
