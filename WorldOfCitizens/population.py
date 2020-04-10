@@ -3,6 +3,7 @@ from WorldOfCitizens.log import root_logger
 from WorldOfCitizens.config import Config
 
 
+# Keys
 ID = 0
 X = 1
 Y = 2
@@ -12,12 +13,21 @@ SPEED = 5
 STATE = 6
 INFECTED_SINCE = 7
 RECOVERY_DURATION = 8
+DESTINATION = 9             # Destionation: 0:randomly moving around (wander), >1:Index of destionation matrix
+DESTINATION_ARRIVED = 10    # 0:No, 1:Arrived at destination (switch to wandering here)
+WANDER_RANGE_X = 11         # x-range of wandering when reached a destination
+WANDER_RANGE_Y = 12         # y-range of wandering when reached a destination
 
+# Valid state values
 STATE_HEALTHY = 0
 STATE_SICK = 1
 STATE_IMMUNE = 2
 STATE_DEAD = 3
 STATE_IMMUNDE_BUT_INFECTIOUS = 4
+
+# Destination
+DESTINATION_WANDERING = 0
+
 
 logger = root_logger.getChild('population')
 
@@ -25,7 +35,7 @@ logger = root_logger.getChild('population')
 def initialize_population(config: Config) -> np.ndarray:
     logger.info('Initialize population, popSize={}'.format(config.popuplation_size))
 
-    population = np.zeros((config.popuplation_size, 9))
+    population = np.zeros((config.popuplation_size, 13))
 
     # Create id's
     logger.debug('Apply ids')
@@ -72,5 +82,10 @@ def initialize_population(config: Config) -> np.ndarray:
 
     # All alive
     population[:, STATE] = STATE_HEALTHY
+
+    # No destinations, wandering mod
+    population[:, DESTINATION] = 0
+    population[:, WANDER_RANGE_X] = 0.01
+    population[:, WANDER_RANGE_Y] = 0.01
 
     return population

@@ -22,42 +22,46 @@ class Config(object):
 
     @property
     def popuplation_size(self) -> int:
-        return int(self._configparser.get('simulation', 'populationSize'))
+        return self._configparser.getint('simulation', 'populationSize')
 
     @property
     def init_avg_speed(self) -> float:
-        return float(self._configparser.get('simulation', 'initAvgSpeed'))
+        return self._configparser.getfloat('simulation', 'initAvgSpeed')
+
+    @property
+    def log_level(self) -> str:
+        return self._configparser.get('simulation', 'logLevel')
 
     # Movement
     # --------
 
     @property
     def heading_update_probability(self) -> float:
-        return float(self._configparser.get('movement', 'headingUpdateProbability'))
+        return self._configparser.getfloat('movement', 'headingUpdateProbability')
 
     @property
     def heading_multiplicator(self) -> float:
-        return float(self._configparser.get('movement', 'headingMultiplicator'))
+        return self._configparser.getfloat('movement', 'headingMultiplicator')
 
     @property
     def speed_multiplicator(self) -> float:
-        return float(self._configparser.get('movement', 'speedMultiplicator'))
+        return self._configparser.getfloat('movement', 'speedMultiplicator')
 
     # Infection
     # ---------
 
     @property
     def infection_range(self) -> float:
-        return float(self._configparser.get('infection', 'infectionRange'))
+        return self._configparser.getfloat('infection', 'infectionRange')
 
     @property
     def infection_probability(self) -> float:
-        return float(self._configparser.get('infection', 'infectionPropability'))
+        return self._configparser.getfloat('infection', 'infectionPropability')
 
     @property
     def recovery_duration(self):
-        rec_from = int(self._configparser.get('infection', 'recoveryDurationFrom'))
-        rec_to = int(self._configparser.get('infection', 'recoveryDurationTo'))
+        rec_from = self._configparser.getint('infection', 'recoveryDurationFrom')
+        rec_to = self._configparser.getint('infection', 'recoveryDurationTo')
         return (rec_from, rec_to)
 
     # World
@@ -97,3 +101,11 @@ class Config(object):
     @property
     def color_dead(self) -> str:
         return self._configparser.get('visualize', 'colorDead')
+
+    @property
+    def draw_active_destinations(self) -> bool:
+        return self._configparser.getboolean('visualize', 'drawActiveDestinations')
+
+    @property
+    def color_active_destinations(self) -> str:
+        return self._configparser.get('visualize', 'colorActiveDestinations')
