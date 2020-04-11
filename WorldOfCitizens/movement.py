@@ -68,8 +68,6 @@ def update_out_of_bounds(population, xbounds, ybounds):
         a_max=-0.05
     )
 
-    return population
-
 
 def update_headings(config: Config, population):
     # Update heading x
@@ -98,10 +96,8 @@ def update_headings(config: Config, population):
         size=shp
     ) * config.speed_multiplicator
 
-    return population
-
 
 def update_movement(config: Config, population):
     population[:, X] = population[:, X] + (population[:, HEADING_X] * population[:, SPEED])
     population[:, Y] = population[:, Y] + (population[:, HEADING_Y] * population[:, SPEED])
-    return population
+    # return population

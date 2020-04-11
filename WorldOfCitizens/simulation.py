@@ -36,18 +36,18 @@ class Simulation(object):
         # Check for destinations in use
         have_active_destinations = len(self._population[self._population[:, DESTINATION] != 0]) > 0
         if have_active_destinations:
-            self._population = update_at_destination(self._population, self._destinations)
-            self._population = update_heading_to_destination(self._population, self._destinations)
-            self._population = stay_at_destination(self._population, self._destinations)
+            update_at_destination(self._population, self._destinations)
+            update_heading_to_destination(self._population, self._destinations)
+            stay_at_destination(self._population, self._destinations)
 
         # Check world boundaries
         xbounds = np.array([[self.config.world_x_bounds[0] + 0.02, self.config.world_x_bounds[1] - 0.02]] * self.config.popuplation_size)
         ybounds = np.array([[self.config.world_y_bounds[0] + 0.02, self.config.world_y_bounds[1] - 0.02]] * self.config.popuplation_size)
-        self._population = update_out_of_bounds(self._population, xbounds, ybounds)
-        self._population = update_headings(self.config, self._population)
-        self._population = update_movement(self.config, self._population)
-        self._population = infect(self.config, self._population, self._frame)
-        self._population = recover_or_die(self.config, self._population, self._frame)
+        update_out_of_bounds(self._population, xbounds, ybounds)
+        update_headings(self.config, self._population)
+        update_movement(self.config, self._population)
+        infect(self.config, self._population, self._frame)
+        recover_or_die(self.config, self._population, self._frame)
 
         # Deads cannot move anymore
         self._population[:, HEADING_X][self._population[:, STATE] == STATE_DEAD] = 0

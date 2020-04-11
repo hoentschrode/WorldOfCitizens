@@ -28,8 +28,6 @@ def infect(config: Config, population, frame: int):
                 population[ind][RECOVERY_DURATION] = int(np.random.uniform(low=config.recovery_duration[0], high=config.recovery_duration[1]))
                 population[ind][INFECTED_SINCE] = frame
 
-    return population
-
 
 def recover_or_die(config: Config, population, frame: int):
     infected = population[population[:, STATE] == STATE_SICK]
@@ -45,7 +43,6 @@ def recover_or_die(config: Config, population, frame: int):
             # Recover
             infected[:, STATE][infected[:, ID] == id] = STATE_IMMUNE
     population[population[:, STATE] == STATE_SICK] = infected
-    return population
 
 
 def _find_nearby_ids(population, zone, state):

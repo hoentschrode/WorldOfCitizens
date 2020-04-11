@@ -56,8 +56,6 @@ def update_heading_to_destination(population, destinations):
         population[:, HEADING_X][citizen_index] = x - population[:, X][citizen_index]
         population[:, HEADING_Y][citizen_index] = y - population[:, Y][citizen_index]
 
-    return population
-
 
 def update_at_destination(population, destinations):
     """
@@ -79,8 +77,6 @@ def update_at_destination(population, destinations):
             (population[:, Y] <= y + range_y)
         population[:, DESTINATION_ARRIVED][arrivals_index] = 1
 
-    return population
-
 
 def stay_at_destination(population, destinations):
     """
@@ -100,4 +96,3 @@ def stay_at_destination(population, destinations):
             xbounds = np.array([[x - range_x, x + range_x]] * number_of_arrived)
             ybounds = np.array([[y - range_y, y + range_y]] * number_of_arrived)
             population[arrivals_index] = update_out_of_bounds(population[arrivals_index], xbounds, ybounds)
-    return population
