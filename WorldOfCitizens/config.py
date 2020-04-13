@@ -64,6 +64,10 @@ class Config(object):
         rec_to = self._configparser.getint('infection', 'recoveryDurationTo')
         return (rec_from, rec_to)
 
+    @property
+    def first_infection_delay_ticks(self) -> int:
+        return self._configparser.getint('infection', 'firstInfectionDelayTicks')
+
     # World
     # -----
 
@@ -109,3 +113,11 @@ class Config(object):
     @property
     def color_active_destinations(self) -> str:
         return self._configparser.get('visualize', 'colorActiveDestinations')
+
+    @property
+    def draw_first_infection_marker(self) -> bool:
+        return self._configparser.getboolean('visualize', 'drawFirstInfectionMarker')
+
+    @property
+    def first_infection_marker_color(self) -> str:
+        return self._configparser.get('visualize', 'firstInfectionMarkerColor')

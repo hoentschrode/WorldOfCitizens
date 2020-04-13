@@ -5,7 +5,8 @@ from WorldOfCitizens.population import ID, X, Y, STATE, RECOVERY_DURATION, STATE
 
 def infect(config: Config, population, frame: int):
 
-    if frame == 20:
+    # Trigger patient0  
+    if frame == config.first_infection_delay_ticks:
         id = int(np.random.uniform(low=0, high=config.popuplation_size))
         population[:, STATE][population[:, ID] == id] = STATE_SICK
         population[:, RECOVERY_DURATION][population[:, ID] == id] = int(np.random.uniform(low=config.recovery_duration[0], high=config.recovery_duration[1]))

@@ -11,6 +11,11 @@ class StatTracker(object):
         self._recovered = []
         self._fatalities = []
 
+        # time tick when first infection was detected
+        self._first_infection_tick = None
+
+        self._doubling_times = []
+
         self._t0 = None
         self._X0 = None
 
@@ -30,20 +35,32 @@ class StatTracker(object):
     def fatalities(self):
         return self._fatalities
 
+    @property
+    def doubling_times(self):
+        return self._doubling_times
+
+    @property
+    def first_infection_tick(self) -> int:
+        return self._first_infection_tick
+
     def update(self, config: Config, population: np.ndarray, tick):
         self._susceptible.append(len(population[population[:, STATE] == STATE_HEALTHY]))
         self._infectious.append(len(population[population[:, STATE] == STATE_SICK]))
         self._recovered.append(len(population[population[:, STATE] == STATE_IMMUNE]))
         self._fatalities.append(len(population[population[:, STATE] == STATE_DEAD]))
 
+        if self._first_infection_tick is None and len(population[population[:, STATE] == STATE_SICK]):
+            self._first_infection_tick = tick
+
         # Calculation double time number
+        td = 0
         if self._t0 is None and len(population[population[:, STATE] == STATE_SICK]) > 0:
             self._t0 = tick
             self._X0 = len(population[population[:, STATE] == STATE_SICK])
             return
-
-        if self._t0 is not None and len(population[population[:, STATE] == STATE_SICK]) > 0:
+        elif self._t0 is not None and len(population[population[:, STATE] == STATE_SICK]) > 0:
             mu = (np.log(len(population[population[:, STATE] == STATE_SICK])) - np.log(self._X0)) / (tick - self._t0)
             if mu != 0.0:
                 td = np.log(2) / mu
-                print(td)
+
+        self._doubling_times.append(td)
